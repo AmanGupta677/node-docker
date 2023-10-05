@@ -43,8 +43,8 @@ app.use(
 
 app.use(express.json());    
 
-app.get("/", (req, res) => {
-    res.send("<h3>Hi There</h3>");
+app.get("/api/v1", (req, res) => {
+    res.send("<h3>Hi There!!!</h3>");
 });
    
 app.use("/api/v1/posts", postRouter);
