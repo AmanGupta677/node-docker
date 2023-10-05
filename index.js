@@ -43,7 +43,7 @@ app.use(
 
 app.use(express.json());    
 
-app.get("/api/v1", (req, res) => {
+app.get("/", (req, res) => {
     res.send("<h3>Hi There</h3>");
 });
    
