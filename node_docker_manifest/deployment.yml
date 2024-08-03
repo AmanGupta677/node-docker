@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: node-docker-app
+  labels: 
+    app: node-docker-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: node-docker-app
+    template: 
+      metadata:
+        labels:
+          app: node-docker-app
+      spec:
+        containers:
+        - name: node-docker-app
+          image: amangupta677/node-app:replaceImageTag
+          ports:
+          - containerPort: 3000
