@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'amangupta677/node-app:v1'
-            args '--user root -v /var/ruun/docker.sock:/var/run/docker.sock'
+            args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
     stages {
