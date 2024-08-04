@@ -1,0 +1,96 @@
+pipeline {
+    agent {
+        docker {
+            image 'amangupta677/node-app:v1'
+            args '--user root -v /var/ruun/docker.sock:/var/run/docker.sock'
+        }
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                sh 'echo passed'
+                git branch: 'main', url: 'https://github.com/AmanGupta677/node-docker.git'
+            }
+        }
+        stage('Install dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Lint') {
+            steps {
+                sh 'npm run lint'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+         stage('Static Code Analysis') {
+            environment {
+                SONAR_URL = "http://34.201.116.83:9000"
+            }
+            steps {
+                withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+                sh "${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.host.url=http://your-sonarqube-server \
+                        -Dsonar.login=your-sonarqube-token"
+                }
+            }
+        }
+        stage('Build and Push Docker Image') {
+            environment {
+                DOCKER_iMAGE = "amangupta677/node-app:${BUILD_NUMBER}"
+                REGISTRY_CREDENTIALS = credentials('docekr-cred')
+            }
+            steps {
+                script {
+                    sh 'docker build -t node-app .'
+                    def dockerImage = docker.image("${DOCKER_IMAGE}")
+                    docker.withRegistry('https://index.io/v/', "docker-cred"){
+                        dockerImage.Push()
+                    }
+                }
+            }
+        }
+        stage('Update DEployment File') {
+            environment {
+                GIT_REPO_NAME = "node-docker"
+                GIT_USER_NAME = "AmanGupta677"
+            }
+            steps {
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                    git config user.email "aman.xyz@gmail.com"
+                    git config user.name "Aman Gupta"
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" node_docker_manifest/deployment.yml
+                    git add node_docker_manifest/deployment.yml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                '''
+                }
+            }
+        }
+    }
+        post {
+        success {
+            // Actions on success
+            mail to: 'gaman4941@gmail.com',
+                 subject: "SUCCESS: Build ${env.BUILD_ID}",
+                 body: "The build ${env.BUILD_ID} was successful."
+        }
+        failure {
+            // Actions on failure
+            mail to: 'gaman4941@gmail.com',
+                 subject: "FAILURE: Build ${env.BUILD_ID}",
+                 body: "The build ${env.BUILD_ID} failed."
+        }
+    }
+}
