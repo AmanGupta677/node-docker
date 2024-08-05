@@ -31,7 +31,8 @@ pipeline {
         //     }
         //     steps {
         //         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-        //             sh "-Dsonar.host.url=${SONAR_URL} \
+        //             sh "cd node-docker \
+        //                 -Dsonar.host.url=${SONAR_URL} \
         //                 -Dsonar.login=$SONAR_AUTH_TOKEN"
         //         }
         //     }
@@ -67,20 +68,6 @@ pipeline {
                     '''
                 }
             }
-        }
-    }
-    post {
-        success {
-            // Actions on success
-            mail to: 'gaman4941@gmail.com',
-                 subject: "SUCCESS: Build ${env.BUILD_ID}",
-                 body: "The build ${env.BUILD_ID} was successful."
-        }
-        failure {
-            // Actions on failure
-            mail to: 'gaman4941@gmail.com',
-                 subject: "FAILURE: Build ${env.BUILD_ID}",
-                 body: "The build ${env.BUILD_ID} failed."
         }
     }
 }
