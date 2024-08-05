@@ -16,6 +16,6 @@ spec:
       spec:
         containers:
         - name: node-docker-app
-          image: amangupta677/node-app:replaceImageTag
+          image: amangupta677/node-app:6
           ports:
           - containerPort: 3000
