@@ -115,3 +115,25 @@ The docker agent configuration is now successful.
   ```
 - edit branch specifier to `*/main`
 - Click on `Apply` and `Save`
+
+## Adding Credentials in Jenkins:
+### Adding Docker Hub credentials
+***
+   - Log in to Jenkins.
+   - Go to Manage Jenkins > Credentials.
+   - Click on System
+   - Click on Global Credentials then Add credentials
+   - Select `Kind` as username and password and put your docker hub username and password and on the `ID` section put `docker-cred`
+   - And create
+### Adding Github Credentials
+***
+   - click on Add credentials
+   - Select `Kind` as Secret Text and put you `Github` Token in secret text box and put `ID` as `github`
+   - and create
+
+## Now start the pipeline
+
+- Go to Dashboard, click on you pipeline
+- click on `BUILD NOW`
+
+Now you pipeline is created for `Continuous Integration`
