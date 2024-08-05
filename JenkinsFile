@@ -25,19 +25,18 @@ pipeline {
                 }
             }
         }
-        // DISABLED THE SONARQUBE SERVER DUE TO AWS FREE_TIER NOT ABLE TO HANDLE THE SONARQUBE SERVER
-        // stage('Static Code Analysis') {
-        //     environment {
-        //         SONAR_URL = "http://34.201.116.83:9000"
-        //     }
-        //     steps {
-        //         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-        //             sh "${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
-        //                 -Dsonar.host.url=http://your-sonarqube-server \
-        //                 -Dsonar.login=your-sonarqube-token"
-        //         }
-        //     }
-        // }
+        stage('Static Code Analysis') {
+            environment {
+                SONAR_URL = "http://54.234.220.252:9000/"
+            }
+            steps {
+                withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+                    sh "${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.host.url=http://your-sonarqube-server \
+                        -Dsonar.login=your-sonarqube-token"
+                }
+            }
+        }
         stage('Build and Push Docker Image') {
             environment {
                 REGISTRY_CREDENTIALS = credentials('docker-cred')
