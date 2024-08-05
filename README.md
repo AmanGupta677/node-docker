@@ -15,6 +15,7 @@
 Pre-Requisites:
  - Java (JDK)
  - Postman (For using APIs)
+ - Docker Desktop
 
 ### Run the below commands to install Java and Jenkins on the EC2 server
 ***
@@ -64,7 +65,7 @@ After you login to Jenkins,
 - Create First Admin User or Skip the step [If you want to use this Jenkins instance for future use-cases as well, better to create admin user]
 - Jenkins Installation is Successful. You can now starting using the Jenkins
 
-## Install the Docker Pipeline plugin in Jenkins:
+### Install the Docker Pipeline plugin in Jenkins:
 ***
    - Log in to Jenkins.
    - Go to Manage Jenkins > Manage Plugins.
@@ -73,7 +74,7 @@ After you login to Jenkins,
    - Restart Jenkins after the plugin is installed.(To restart jenkins just add `/restart` at the url example:`http://ec2-instance-public-ip-address:8080/restart`)
    - Wait for the Jenkins to be restarted.
 
-## Docker Slave Configuration
+### Docker Slave Configuration
 ***
 Run the below command to Install Docker
 
@@ -99,3 +100,18 @@ http://<ec2-instance-public-ip>:8080/restart
 ```
 
 The docker agent configuration is now successful.
+
+# Jenkins pipeline setup
+
+- Create a job
+- create pipeline name, select Pipeline and Click on `OK`
+- Go to pipeline
+- Select pipeline script from SCM, select SCM as github
+- Enter repository URL
+
+  ```
+  https://github.com/AmanGupta677/node-docker.git
+
+  ```
+- edit branch specifier to `*/main`
+- Click on `Apply` and `Save`
