@@ -1,15 +1,18 @@
 pipeline {
-    agent {
-        docker {
-            image 'amangupta677/node-app:latest'
-            args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any 
     stages {
         stage('Checkout') {
             steps {
                 sh 'echo passed'
                 git branch: 'main', url: 'https://github.com/AmanGupta677/node-docker.git'
+            }
+        }
+        stage('Build') {
+            agent {
+                docker {
+                image 'amangupta677/node-app:latest'
+                args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+                }
             }
         }
         stage('Install dependencies') {
