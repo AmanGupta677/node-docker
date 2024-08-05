@@ -48,7 +48,7 @@ pipeline {
         stage('Build and Push Docker Image') {
             environment {
                 DOCKER_iMAGE = "amangupta677/node-app:${BUILD_NUMBER}"
-                REGISTRY_CREDENTIALS = credentials('docekr-cred')
+                REGISTRY_CREDENTIALS = credentials('docker-cred')
             }
             steps {
                 script {
