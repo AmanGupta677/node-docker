@@ -23,11 +23,6 @@ pipeline {
                         sh 'npm install'
                     }
                 }
-                stage('Build') {
-                    steps {
-                        sh 'npm run build'
-                    }
-                }
             }
         }
         // DISABLED THE SONARQUBE SERVER DUE TO AWS FREE_TIER NOT ABLE TO HANDLE THE SONARQUBE SERVER
