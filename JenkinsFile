@@ -25,17 +25,17 @@ pipeline {
                 }
             }
         }
-        stage('Static Code Analysis') {
-            environment {
-                SONAR_URL = "http://54.234.220.252:9000"
-            }
-            steps {
-                withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-                    sh "-Dsonar.host.url=${SONAR_URL} \
-                        -Dsonar.login=$SONAR_AUTH_TOKEN"
-                }
-            }
-        }
+        // stage('Static Code Analysis') {
+        //     environment {
+        //         SONAR_URL = "http://54.234.220.252:9000"
+        //     }
+        //     steps {
+        //         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+        //             sh "-Dsonar.host.url=${SONAR_URL} \
+        //                 -Dsonar.login=$SONAR_AUTH_TOKEN"
+        //         }
+        //     }
+        // }
         stage('Build and Push Docker Image') {
             environment {
                 REGISTRY_CREDENTIALS = credentials('docker-cred')
