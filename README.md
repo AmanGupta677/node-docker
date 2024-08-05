@@ -14,7 +14,7 @@
 ***
 Pre-Requisites:
  - Java (JDK)
- - postman
+ - Postman (For using APIs)
 
 ### Run the below commands to install Java and Jenkins on the EC2 server
 ***
