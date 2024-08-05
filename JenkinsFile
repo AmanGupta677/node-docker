@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'amangupta677/node-app:latest'
-            args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
     environment {
         DOCKER_IMAGE = "amangupta677/node-app:${env.BUILD_NUMBER}"
     }
@@ -15,34 +10,44 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/AmanGupta677/node-docker.git'
             }
         }
-        stage('Install dependencies') {
-            steps {
-                sh 'npm install'
+        stage('Build and Test') {
+            agent {
+                docker {
+                    image 'amangupta677/node-app:latest'
+                    args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+                }
             }
-        }
-        stage('Lint') {
-            steps {
-                sh 'npm run lint'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'npm test'
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'npm run build'
+            stages {
+                stage('Install dependencies') {
+                    steps {
+                        sh 'npm install'
+                    }
+                }
+                stage('Lint') {
+                    steps {
+                        sh 'npm run lint'
+                    }
+                }
+                stage('Test') {
+                    steps {
+                        sh 'npm test'
+                    }
+                }
+                stage('Build') {
+                    steps {
+                        sh 'npm run build'
+                    }
+                }
             }
         }
         // DISABLED THE SONARQUBE SERVER DUE TO AWS FREE_TIER NOT ABLE TO HANDLE THE SONARQUBE SERVER
-        //  stage('Static Code Analysis') {
+        // stage('Static Code Analysis') {
         //     environment {
         //         SONAR_URL = "http://34.201.116.83:9000"
         //     }
         //     steps {
         //         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-        //         sh "${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
+        //             sh "${SONARQUBE_SCANNER_HOME}/bin/sonar-scanner \
         //                 -Dsonar.host.url=http://your-sonarqube-server \
         //                 -Dsonar.login=your-sonarqube-token"
         //         }
