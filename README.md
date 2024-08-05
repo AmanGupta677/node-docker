@@ -16,6 +16,7 @@ Pre-Requisites:
  - Java (JDK)
  - Postman (For using APIs)
  - Docker Desktop
+ - minikube (Running on local device in docker desktop)
 
 ### Run the below commands to install Java and Jenkins on the EC2 server
 ***
