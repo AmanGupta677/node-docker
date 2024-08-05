@@ -16,9 +16,10 @@ pipeline {
         }
         stage('Install dependencies') {
             agent {
-                image 'amangupta677/node-app:latest'
-                args '--user root'
-            }
+                docker {
+                    image 'amangupta677/node-app:latest'
+                    args '--user root'
+                    }
             steps {
                 sh 'npm install'
             }
