@@ -31,8 +31,7 @@ pipeline {
             }
             steps {
                 withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-                    sh "cd node-docker \
-                        -Dsonar.host.url=${SONAR_URL} \
+                    sh "-Dsonar.host.url=${SONAR_URL} \
                         -Dsonar.login=$SONAR_AUTH_TOKEN"
                 }
             }
