@@ -1,9 +1,10 @@
 pipeline {
-    agent none
-        // docker {
-        //     image 'amangupta677/node-app:latest'
-        //     args '--user root'
-        // }
+    agent {
+        docker {
+            image 'amangupta677/node-app:latest'
+            args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     environment {
         DOCKER_IMAGE = "amangupta677/node-app:${env.BUILD_NUMBER}"
     }
@@ -15,14 +16,8 @@ pipeline {
             }
         }
         stage('Install dependencies') {
-            agent {
-                docker {
-                    image 'amangupta677/node-app:latest'
-                    args '--user root'
-                    }
             steps {
                 sh 'npm install'
-                }
             }
         }
         stage('Lint') {
